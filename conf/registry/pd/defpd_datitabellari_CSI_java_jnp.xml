@@ -1,0 +1,30 @@
+<porta-delegata name="serviscritto.datitabellari">
+	<services>
+<service name="datitabellari"
+         public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.datitabellari.DatiTabellariSrv" 
+         top-version="2.2.0">
+	<operations>
+<operation name="test" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="arg0" type="java.lang.String" />
+	</param-list>
+	<ret-val type="java.lang.String" />
+</operation>
+	</operations>
+</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="datitabellari"
+			              class="it.csi.csi.porte.ejb20.PortaDelegataEJB"
+			              url-pa="serviscritto.ejb.ApplDatiTabellariPA"
+			              url-qm="serviscritto.ejb.ApplDatiTabellariQMGR">
+				<properties>
+					<property name="java.naming.provider.url" value="@iscritto.serviscritto.datitabellari.pa.url@"/>
+				</properties>
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<queue-manager url=""/>
+	</config>
+</porta-delegata>

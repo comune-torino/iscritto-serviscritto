@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	version="1.4" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd">
+  <display-name>serviscritto</display-name>
+
+  <!-- moduli relativi ai vari binding -->
+  
+  
+  	
+  	<!-- ejb module relativo alla PA del servizio con codice binding=ejbpa. -->
+	<module>
+		<ejb>appl-luoghi-ejbpa.jar</ejb>
+  	</module>
+  	
+  	
+    	
+  
+	<module>
+		<ejb>luoghi-startup.sar</ejb>
+	</module>
+  
+  
+  	
+  	<!-- ejb module relativo alla PA del servizio con codice binding=ejbpa. -->
+	<module>
+		<ejb>appl-profilazione-ejbpa.jar</ejb>
+  	</module>
+  	
+  	
+    	
+  
+	<module>
+		<ejb>profilazione-startup.sar</ejb>
+	</module>
+  
+  
+  	
+  	<!-- ejb module relativo alla PA del servizio con codice binding=ejbpa. -->
+	<module>
+		<ejb>appl-scuole-ejbpa.jar</ejb>
+  	</module>
+  	
+  	
+    	
+  
+	<module>
+		<ejb>scuole-startup.sar</ejb>
+	</module>
+  
+  
+  	
+  	<!-- ejb module relativo alla PA del servizio con codice binding=ejbpa. -->
+	<module>
+		<ejb>appl-datitabellari-ejbpa.jar</ejb>
+  	</module>
+  	
+  	
+    	
+  
+	<module>
+		<ejb>dati_tabellari-startup.sar</ejb>
+	</module>
+  
+  
+  	
+  	<!-- ejb module relativo alla PA del servizio con codice binding=ejbpa. -->
+	<module>
+		<ejb>appl-domanda-ejbpa.jar</ejb>
+  	</module>
+  	
+  	
+    	
+  
+	<module>
+		<ejb>domanda-startup.sar</ejb>
+	</module>
+  
+</application>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="@JNDI_NAME@" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+
+	<bean id="namedJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<bean id="profilazioneDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.view.impl.ProfilazioneDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="istruttoriaDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.custom.impl.IstruttoriaDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="accettazioneDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.custom.impl.AccettazioneDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="graduatoriaDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.custom.impl.GraduatoriaDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="infoGeneraliDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.view.impl.InfoGeneraliDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="reportDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.custom.impl.ReportDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="ricevutaAllegatoDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.custom.impl.RicevutaAllegatoDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<bean id="anagraficaDao"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.custom.impl.AnagraficaDaoImpl">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+	</bean>
+
+	<!-- valorizzazione properties comuni -->
+	<bean id="abstractDomanda" abstract="true">
+		<property name="namedJdbcTemplate">
+			<ref bean="namedJdbcTemplate" />
+		</property>
+    	<property name="encryptionKey" value="@ENC_KEY@" />
+	</bean>
+
+	<bean id="domandaDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.view.impl.DomandaDaoImpl">
+	</bean>
+
+	<bean id="soggettoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.view.impl.SoggettoDaoImpl">
+	</bean>
+
+	<bean id="validazioneDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.view.impl.ValidazioneDaoImpl">
+	</bean>
+
+	<bean id="affidoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.AffidoDaoImpl">
+	</bean>
+
+	<bean id="allegatoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.AllegatoDaoImpl">
+	</bean>
+
+	<bean id="anagraficaSogDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.AnagraficaSogDaoImpl">
+	</bean>
+
+	<bean id="annoScoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.AnnoScoDaoImpl">
+	</bean>
+
+	<bean id="auditLogDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.AuditLogDaoImpl">
+	</bean>
+
+	<bean id="autonomoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.AutonomoDaoImpl">
+	</bean>
+
+	<bean id="cambioResDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.CambioResDaoImpl">
+	</bean>
+
+	<bean id="comuneDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.ComuneDaoImpl">
+	</bean>
+
+	<bean id="condizioneOccDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.CondizioneOccDaoImpl">
+	</bean>
+
+	<bean id="condizioneSanDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.CondizioneSanDaoImpl">
+	</bean>
+
+	<bean id="decodificaDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.DecodificaDaoImpl">
+	</bean>
+
+	<bean id="dipendenteDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.DipendenteDaoImpl">
+	</bean>
+
+	<bean id="disoccupatoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.DisoccupatoDaoImpl">
+	</bean>
+
+	<bean id="disoccupatoExDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.DisoccupatoExDaoImpl">
+	</bean>
+
+	<bean id="domandaIscDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.DomandaIscDaoImpl">
+	</bean>
+
+	<bean id="fratelloFreDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.FratelloFreDaoImpl">
+	</bean>
+
+	<bean id="genitoreSoloDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.GenitoreSoloDaoImpl">
+	</bean>
+
+	<bean id="indirizzoResDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.IndirizzoResDaoImpl">
+	</bean>
+
+	<bean id="iseeDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.IseeDaoImpl">
+	</bean>
+
+	<bean id="scuolaDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.ScuolaDaoImpl">
+	</bean>
+
+	<bean id="serviziSocDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.ServiziSocDaoImpl">
+	</bean>
+
+	<bean id="soggettoRelDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.SoggettoRelDaoImpl">
+	</bean>
+
+	<bean id="statoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.StatoDaoImpl">
+	</bean>
+
+	<bean id="studenteDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.StudenteDaoImpl">
+	</bean>
+
+	<bean id="trasferimentoDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.TrasferimentoDaoImpl">
+	</bean>
+
+	<bean id="scuoleDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.view.impl.ScuoleDaoImpl">
+	</bean>
+
+	<bean id="utenteDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.UtenteDaoImpl">
+	</bean>
+
+	<bean id="condizionePunteggioDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.CondizionePunteggioDaoImpl">
+	</bean>
+
+	<bean id="errorLogDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.ErrorLogDaoImpl">
+	</bean>
+
+	<bean id="listaAttesaDao" parent="abstractDomanda"
+		class="it.csi.iscritto.serviscritto.business.integration.dao.table.impl.ListaAttesaDaoImpl">
+	</bean>
+
+</beans>

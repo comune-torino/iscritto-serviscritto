@@ -1,0 +1,206 @@
+
+<ivy-module version="1.0">
+
+	<info organisation="csipiemonte" module="serviscritto" />
+
+	<dependencies>
+
+		<!-- librerie per il logging applicativo e la misurazione 
+		     delle performance. Nota: la piattaforma jboss impone l'utilizzo della
+		     versione 1.2.14. 
+		     -->		
+		<dependency org="apache" name="log4j" rev="1.2.14">
+			<artifact name="log4j-1.2.14" type="jar" />
+		</dependency>
+
+		<dependency org="csipiemonte" name="util-perf" rev="1.0.0">
+			<artifact name="util-perf-1.0.0" type="jar" />
+		</dependency>
+
+		<!-- librerie per l'implementazione di monitoraggio e diagnostica -->
+		<dependency org="csipiemonte" name="coop-diag" rev="1.2.1">
+			<artifact name="coop-diag-1.2.1" type="jar" />
+		</dependency>
+		
+		<!-- librerie per la realizzazioen dei test unitari -->
+		<dependency org="others" name="junit" rev="3.8.1">
+			<artifact name="junit-3.8.1" type="jar" />
+		</dependency>
+
+		<!-- librerie Core di C.S.I -->
+		<dependency org="csipiemonte" name="csi" rev="1.4.5">
+			<artifact name="csi-apachesoap-1.4.5" type="jar" />
+			<artifact name="csi-core-1.4.5" type="jar" />
+			<artifact name="csi-ejb-1.4.5" type="jar" />
+			<artifact name="csi-ejb-weblogic-1.4.5" type="jar" />
+			<artifact name="csi-rmi-1.4.5" type="jar" />
+			<artifact name="csi-stadapter-1.4.5" type="jar" />
+			<artifact name="csi-tools-1.4.5" type="jar" />
+		</dependency>
+	    
+	    <!-- librerie necessarie pe ri binding WSFAD -->
+	    <dependency org="csipiemonte" name="wsadp" rev="2.1.0">
+	    	<artifact name="wsadp-2.1.0" type="jar" /> 
+	    </dependency>
+	    
+	    <!-- librerie necessarie se si attiva il supporto coop trace
+	         (specifiche per la target platform JBossEAP6. 
+	    -->
+	    
+	    <dependency org="csipiemonte" name="coop-trace" rev="1.2.0">
+	    	<artifact name="coop-trace-1.2.0" type="jar" />
+	    </dependency>
+	    
+	    <!-- dipendenze per svcflow 1.2.1 -->
+	    <dependency org="csipiemonte" name="svcflow" rev="1.2.1">
+	    	<artifact name="svcflow-1.2.1" type="jar" />
+	    </dependency>
+	    
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [luoghi] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [profilazione] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [scuole] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [datiTabellari] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [luoghi] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [profilazione] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [scuole] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [datiTabellari] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [luoghi] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [profilazione] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [scuole] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [datiTabellari] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [luoghi] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [profilazione] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [scuole] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [datiTabellari] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [luoghi] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [profilazione] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [scuole] -->
+	    
+
+	    
+		<!-- dipendenze necessarie per il PDPAServiceConnector [datiTabellari] -->
+	    
+
+	    
+	    
+		<!-- librerie necessarie per l'implementazione spring -->
+		<dependency org="others" name="spring" rev="3.1.1.RELEASE" transitive="false" >
+	      <artifact name="spring-aop-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-asm-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-beans-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-context-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-core-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-expression-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-jdbc-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-tx-3.1.1.RELEASE" type="jar" />
+	      <artifact name="spring-web-3.1.1.RELEASE" type="jar" />
+	    </dependency>
+	    <dependency org="others" name="aopalliance" rev="1.0" />
+	    
+	    
+	    
+        <!-- librerie specifiche della target platform JBoss43 -->
+		<dependency org="others" name="jboss" rev="4.3.0">
+			<artifact name="jboss-j2ee-4.3.0" type="jar" />
+			<artifact name="jboss-servlet-api-4.3.0" type="jar" /> 
+		</dependency>
+		
+		<!-- librerie necessarie per la connessione a servizi su WLS92 -->
+		<dependency org="csipiemonte" name="weblogic-client" rev="3.0.0">
+			<artifact name="weblogic-client-3.0.0" type="jar" /> 
+		</dependency>
+		
+	    
+		<dependency org="csipiemonte" name="axiscsi" rev="1.0.0">
+			<artifact name="axis-1.4.csi-1.0.0" type="jar" />
+		</dependency>
+		
+		<dependency org="apache" name="axis-ant" rev="1.4">
+			<artifact name="axis-ant-1.4" type="jar" />
+		</dependency>
+	    
+	    <!--PROTECTED REGION ID(R1988116401) ENABLED START-->
+	    <!-- inserire QUI le direttive di download di eventuali librerie extra 
+	         ricordarsi di referenziare i jar nel file build.properties nella
+	         variabile extra.app.libs
+	    -->
+
+	    
+		<dependency org="apache" name="commons-lang3" rev="3.2.1">
+		    <artifact name="commons-lang3-3.2.1" ext="jar"/>
+		</dependency>
+
+		<dependency org="apache" name="commons-collections" rev="4.4.1">
+		    <artifact name="commons-collections4-4.1" ext="jar"/>
+		</dependency>
+
+		<dependency org="apache" name="commons-io" rev="2.2" >
+			<artifact name="commons-io-2.2" type="jar" />
+		</dependency>
+
+		<dependency org="redhat" name="jackson-mapper-asl" rev="1.9.9.redhat-4">
+			<artifact name="jackson-mapper-asl-1.9.9.redhat-4" type="jar" />
+		</dependency>
+		<dependency org="redhat" name="jackson-core-asl" rev="1.9.9.redhat-4">
+			<artifact name="jackson-core-asl-1.9.9.redhat-4" type="jar" />
+		</dependency>
+	    
+	    <!--PROTECTED REGION END-->
+	</dependencies>
+
+</ivy-module>

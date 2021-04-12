@@ -1,0 +1,145 @@
+<porta-delegata name="serviscritto.domanda">
+	<services>
+<service name="domanda"
+         public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.domanda.DomandaSrv" 
+         top-version="1.0.0">
+	<operations>
+<operation name="getElencoDomande" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="codiceFiscaleOperatore" type="java.lang.String" />
+<param name="criterioRicerca" type="it.csi.iscritto.serviscritto.dto.domanda.CriterioRicerca" />
+	</param-list>
+	<ret-val type="java.lang.Long[]" />
+</operation>
+<operation name="getTestataDomanda" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="idDomanda" type="java.lang.Long" />
+<param name="tipoTestata" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomanda" />
+</operation>
+<operation name="getElencoStatiDomanda" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Codifica[]" />
+</operation>
+<operation name="getDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="idDomanda" type="java.lang.Long" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+</operation>
+<operation name="insertDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="domandaNido" type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+</operation>
+<operation name="checkDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="codiceFiscaleRic" type="java.lang.String" />
+<param name="codiceFiscaleMin" type="java.lang.String" />
+	</param-list>
+	<ret-val type="void" />
+</operation>
+<operation name="deleteDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="idDomanda" type="java.lang.Long" />
+	</param-list>
+	<ret-val type="void" />
+</operation>
+<operation name="getAllegato" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="cfRichiedente" type="java.lang.String" />
+<param name="idDomanda" type="java.lang.Long" />
+<param name="idAllegato" type="java.lang.Long" />
+<param name="withContent" type="boolean" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Allegato" />
+</operation>
+<operation name="deleteAllegato" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="cfRichiedente" type="java.lang.String" />
+<param name="cfOperatore" type="java.lang.String" />
+<param name="idDomanda" type="java.lang.Long" />
+<param name="idAllegato" type="java.lang.Long" />
+	</param-list>
+	<ret-val type="java.lang.Integer" />
+</operation>
+<operation name="insertAllegatoList" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="cfRichiedente" type="java.lang.String" />
+<param name="cfOperatore" type="java.lang.String" />
+<param name="idDomanda" type="java.lang.Long" />
+<param name="allegatoList" type="it.csi.iscritto.serviscritto.dto.domanda.Allegato[]" />
+	</param-list>
+	<ret-val type="java.lang.Long[]" />
+</operation>
+<operation name="invioDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="idDomanda" type="java.lang.Long" />
+	</param-list>
+	<ret-val type="java.lang.String" />
+</operation>
+<operation name="getDomandeIstruttoria" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="criterioRicerca" type="it.csi.iscritto.serviscritto.dto.domanda.CriterioRicercaIstruttoria" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaIstruttoria[]" />
+</operation>
+<operation name="insertLogErroreDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="codiceFiscaleOperatore" type="java.lang.String" />
+<param name="dettaglioErrore" type="java.lang.String" />
+<param name="domandaNido" type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+	</param-list>
+	<ret-val type="void" />
+</operation>
+<operation name="checkIdDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="codiceFiscaleRic" type="java.lang.String" />
+<param name="idDomanda" type="java.lang.Long" />
+	</param-list>
+	<ret-val type="void" />
+</operation>
+<operation name="checkRichiedenteDomandaNido" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+<param name="codiceFiscaleRic" type="java.lang.String" />
+<param name="domandaNido" type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+	</param-list>
+	<ret-val type="void" />
+</operation>
+	</operations>
+</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="domanda"
+			              class="it.csi.csi.porte.soap.apache.PortaDelegataSoap"
+			              url-pa="@iscritto.serviscritto.domanda.pabr.server.prefix@/serviscrittoApplDomandaPabr/servlet/rpcrouter"
+			              url-qm="">
+				<properties>
+					<!-- dummy property (elemento obbligatorio) -->
+					<property name="dummy" value="dummy"/>
+				</properties>
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<queue-manager url=""/>
+	</config>
+</porta-delegata>

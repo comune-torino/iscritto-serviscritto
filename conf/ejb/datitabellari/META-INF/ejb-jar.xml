@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+
+	<enterprise-beans>
+	    <!-- 
+			===================================================================
+			Implementazione del servizio
+			===================================================================
+		-->
+		<session>
+			<ejb-name>DatiTabellariBean</ejb-name>
+			<!--<home>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariHome</home>
+			<remote>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariRemote</remote>-->
+			<local-home>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariLocalHome</local-home>
+			<local>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariLocal</local>
+			<ejb-class>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>				
+		</session>				
+		
+		<!-- 
+			===================================================================
+			Porta applicativa del servizio
+			===================================================================
+		-->
+		<session>
+			<ejb-name>DatiTabellariPA</ejb-name>
+			<home>it.csi.csi.porte.ejb20.PortaApplicativaHome</home>
+			<remote>it.csi.csi.porte.ejb20.PortaApplicativaEJB</remote>
+			<ejb-class>
+				it.csi.csi.porte.ejb20.PortaApplicativaBean
+			</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>defpa</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>/defpa_datitabellari.xml</env-entry-value>
+			</env-entry>
+			<ejb-local-ref>
+				<description>reference all bean che implementa il servizio</description>
+				<ejb-ref-name>DatiTabellariBean</ejb-ref-name>
+				<ejb-ref-type>Session</ejb-ref-type>
+				<local-home>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariLocalHome</local-home>
+				<local>it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariLocal</local>
+				<ejb-link>DatiTabellariBean</ejb-link>
+			</ejb-local-ref>
+		</session>
+		
+		
+		
+	</enterprise-beans>
+	
+	<assembly-descriptor>
+		<!-- ruoli di sicurezza -->
+		
+		
+		<!-- transazioni -->
+		
+			
+		<container-transaction>
+		
+		
+		
+			<method>
+				<ejb-name>DatiTabellariBean</ejb-name>
+				<method-name>test</method-name>
+			</method>
+		
+		<trans-attribute>NotSupported</trans-attribute>
+		</container-transaction>
+						
+		
+				
+		
+						
+		
+		
+		<container-transaction>
+			<method>
+				<ejb-name>DatiTabellariPA</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>NotSupported</trans-attribute>
+		</container-transaction>
+	</assembly-descriptor>
+	
+</ejb-jar>

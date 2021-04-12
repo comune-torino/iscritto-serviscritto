@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"> 
+       					   
+
+	<!--PROTECTED REGION ID(R1721352915) ENABLED START-->
+	<!-- valorizzazione properties comuni -->
+	<bean id="abstractDomandaService" abstract="true">
+		<property name="affidoDao">
+			<ref bean="affidoDao" />
+		</property>
+		<property name="allegatoDao">
+			<ref bean="allegatoDao" />
+		</property>
+		<property name="anagraficaSogDao">
+			<ref bean="anagraficaSogDao" />
+		</property>
+		<property name="annoScoDao">
+			<ref bean="annoScoDao" />
+		</property>
+		<property name="auditLogDao">
+			<ref bean="auditLogDao" />
+		</property>
+		<property name="autonomoDao">
+			<ref bean="autonomoDao" />
+		</property>
+		<property name="cambioResDao">
+			<ref bean="cambioResDao" />
+		</property>
+		<property name="condizioneOccDao">
+			<ref bean="condizioneOccDao" />
+		</property>
+		<property name="condizioneSanDao">
+			<ref bean="condizioneSanDao" />
+		</property>
+		<property name="dipendenteDao">
+			<ref bean="dipendenteDao" />
+		</property>
+		<property name="disoccupatoDao">
+			<ref bean="disoccupatoDao" />
+		</property>
+		<property name="disoccupatoExDao">
+			<ref bean="disoccupatoExDao" />
+		</property>
+		<property name="domandaIscDao">
+			<ref bean="domandaIscDao" />
+		</property>
+		<property name="fratelloFreDao">
+			<ref bean="fratelloFreDao" />
+		</property>
+		<property name="genitoreSoloDao">
+			<ref bean="genitoreSoloDao" />
+		</property>
+		<property name="indirizzoResDao">
+			<ref bean="indirizzoResDao" />
+		</property>
+		<property name="iseeDao">
+			<ref bean="iseeDao" />
+		</property>
+		<property name="scuolaDao">
+			<ref bean="scuolaDao" />
+		</property>
+		<property name="serviziSocDao">
+			<ref bean="serviziSocDao" />
+		</property>
+		<property name="soggettoRelDao">
+			<ref bean="soggettoRelDao" />
+		</property>
+		<property name="studenteDao">
+			<ref bean="studenteDao" />
+		</property>
+		<property name="trasferimentoDao">
+			<ref bean="trasferimentoDao" />
+		</property>
+		<property name="decodificaDao">
+			<ref bean="decodificaDao" />
+		</property>
+		<property name="comuneDao">
+			<ref bean="comuneDao" />
+		</property>
+		<property name="statoDao">
+			<ref bean="statoDao" />
+		</property>
+		<property name="utenteDao">
+			<ref bean="utenteDao" />
+		</property>
+		<property name="condizionePunteggioDao">
+			<ref bean="condizionePunteggioDao" />
+		</property>
+		<property name="soggettoDao">
+			<ref bean="soggettoDao" />
+		</property>
+		<property name="validazioneDao">
+			<ref bean="validazioneDao" />
+		</property>
+		<property name="domandaDao">
+			<ref bean="domandaDao" />
+		</property>
+		<property name="scuoleDao">
+			<ref bean="scuoleDao" />
+		</property>
+		<property name="errorLogDao">
+			<ref bean="errorLogDao" />
+		</property>
+		<property name="profilazioneDao">
+			<ref bean="profilazioneDao" />
+		</property>
+		<property name="graduatoriaDao">
+			<ref bean="graduatoriaDao" />
+		</property>
+		<property name="listaAttesaDao">
+			<ref bean="listaAttesaDao" />
+		</property>
+	</bean>
+
+	<bean id="domandaService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaService">
+	</bean>
+
+	<bean id="domandaNidoReadService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaNidoReadService">
+	</bean>
+
+	<bean id="domandaMaternaReadService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaMaternaReadService">
+	</bean>
+
+	<bean id="domandaNidoUpdateService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaNidoUpdateService">
+	</bean>
+
+	<bean id="domandaMaternaUpdateService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaMaternaUpdateService">
+	</bean>
+
+	<bean id="domandaNidoValidationService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaNidoValidationService">
+	</bean>
+
+	<bean id="domandaMaternaValidationService" parent="abstractDomandaService"
+		class="it.csi.iscritto.serviscritto.business.domanda.service.DomandaMaternaValidationService">
+	</bean>
+
+	<bean id="allegatoService" class="it.csi.iscritto.serviscritto.business.domanda.service.AllegatoService">
+		<property name="decodificaDao">
+			<ref bean="decodificaDao" />
+		</property>
+		<property name="allegatoDao">
+			<ref bean="allegatoDao" />
+		</property>
+		<property name="anagraficaSogDao">
+			<ref bean="anagraficaSogDao" />
+		</property>
+		<property name="soggettoRelDao">
+			<ref bean="soggettoRelDao" />
+		</property>
+		<property name="soggettoDao">
+			<ref bean="soggettoDao" />
+		</property>
+		<property name="domandaIscDao">
+			<ref bean="domandaIscDao" />
+		</property>
+		<property name="utenteDao">
+			<ref bean="utenteDao" />
+		</property>
+		<property name="ricevutaAllegatoDao">
+			<ref bean="ricevutaAllegatoDao" />
+		</property>
+	</bean>
+
+	<bean id="istruttoriaService" class="it.csi.iscritto.serviscritto.business.domanda.service.IstruttoriaService">
+		<property name="istruttoriaDao">
+			<ref bean="istruttoriaDao" />
+		</property>
+		<property name="scuolaDao">
+			<ref bean="scuolaDao" />
+		</property>
+		<property name="graduatoriaDao">
+			<ref bean="graduatoriaDao" />
+		</property>
+	</bean>
+
+	<bean id="infoGeneraliService" class="it.csi.iscritto.serviscritto.business.domanda.service.InfoGeneraliService">
+		<property name="infoGeneraliDao">
+			<ref bean="infoGeneraliDao" />
+		</property>
+	</bean>
+
+	<bean id="accettazioneService" class="it.csi.iscritto.serviscritto.business.domanda.service.AccettazioneService">
+		<property name="accettazioneDao">
+			<ref bean="accettazioneDao" />
+		</property>
+		<property name="utenteDao">
+			<ref bean="utenteDao" />
+		</property>
+		<property name="domandaIscDao">
+			<ref bean="domandaIscDao" />
+		</property>
+		<property name="decodificaDao">
+			<ref bean="decodificaDao" />
+		</property>
+		<property name="soggettoDao">
+			<ref bean="soggettoDao" />
+		</property>
+	</bean>
+
+	<bean id="graduatoriaService" class="it.csi.iscritto.serviscritto.business.domanda.service.GraduatoriaService">
+		<property name="graduatoriaDao">
+			<ref bean="graduatoriaDao" />
+		</property>
+		<property name="reportDao">
+			<ref bean="reportDao" />
+		</property>
+		<property name="decodificaDao">
+			<ref bean="decodificaDao" />
+		</property>
+	</bean>
+
+	<bean id="anagraficaService" class="it.csi.iscritto.serviscritto.business.domanda.service.AnagraficaService">
+		<property name="anagraficaDao">
+			<ref bean="anagraficaDao" />
+		</property>
+	</bean>
+
+	<!--PROTECTED REGION END-->
+	
+	
+	
+	<bean id="domandaImpl" class="it.csi.iscritto.serviscritto.business.domanda.DomandaImpl">			
+	<!--PROTECTED REGION ID(R-94626624) ENABLED START-->
+
+		<property name="domandaNidoReadService">
+			<ref bean="domandaNidoReadService" />
+		</property>
+		<property name="domandaMaternaReadService">
+			<ref bean="domandaMaternaReadService" />
+		</property>
+		<property name="domandaNidoUpdateService">
+			<ref bean="domandaNidoUpdateService" />
+		</property>
+		<property name="domandaMaternaUpdateService">
+			<ref bean="domandaMaternaUpdateService" />
+		</property>
+		<property name="domandaNidoValidationService">
+			<ref bean="domandaNidoValidationService" />
+		</property>
+		<property name="domandaMaternaValidationService">
+			<ref bean="domandaMaternaValidationService" />
+		</property>
+		<property name="infoGeneraliService">
+			<ref bean="infoGeneraliService" />
+		</property>
+		<property name="allegatoService">
+			<ref bean="allegatoService" />
+		</property>
+		<property name="istruttoriaService">
+			<ref bean="istruttoriaService" />
+		</property>
+		<property name="accettazioneService">
+			<ref bean="accettazioneService" />
+		</property>
+		<property name="graduatoriaService">
+			<ref bean="graduatoriaService" />
+		</property>
+		<property name="domandaService">
+			<ref bean="domandaService" />
+		</property>
+		<property name="anagraficaService">
+			<ref bean="anagraficaService" />
+		</property>
+
+	<!--PROTECTED REGION END-->
+	</bean>
+	
+	
+</beans>

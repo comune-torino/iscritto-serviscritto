@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" 
+	xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <display-name>SOAP PABR profilazione</display-name>
+  <description>no description</description>
+  <servlet>
+	<description>Autoinstalla i servizi soap di bridge</description>
+	<display-name>Apache-SOAP Autoinstaller (CSI)</display-name>
+    <servlet-name>autoinstaller</servlet-name>
+    <servlet-class>it.csi.csi.porte.soap.apache.AutoInstallerServlet</servlet-class>
+    <init-param>
+      <param-name>servicedef-pabr1</param-name>
+      <param-value>/WEB-INF/deploysoapejb-profilazione.xml</param-value>
+    </init-param>
+    
+	
+	
+    <load-on-startup>1000</load-on-startup>
+  </servlet>
+  <servlet>
+	<description>no description</description>
+	<display-name>Apache-SOAP RPC Router</display-name>
+    <servlet-name>rpcrouter</servlet-name>
+    <servlet-class>org.apache.soap.server.http.RPCRouterServlet</servlet-class>
+    <init-param>
+      <param-name>faultListener</param-name>
+      <param-value>org.apache.soap.server.DOMFaultListener</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>autoinstaller</servlet-name>
+    <url-pattern>/servlet/autoinstaller</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>rpcrouter</servlet-name>
+    <url-pattern>/servlet/rpcrouter</url-pattern>
+  </servlet-mapping>
+  <!-- imposto la scadenza sessione al minimo possibile 
+       per aumentare il parallelismo -->
+  <session-config>
+  	<session-timeout>1</session-timeout>
+  </session-config>
+  
+  
+</web-app>

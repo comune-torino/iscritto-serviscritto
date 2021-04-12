@@ -1,0 +1,9 @@
+<ivy-module version="1.0">
+    <info
+        organisation="csipiemonte"
+        module="serviscritto-datitabellari-client"
+        revision="2.2.0" />
+    <publications>
+        <artifact name="serviscritto-datitabellari-client-2.2.0" type="jar" />   
+    </publications>
+</ivy-module>

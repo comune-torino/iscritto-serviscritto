@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+        build.xml file per compilazione, rilascio e deploy. del
+
+        Per una lista completa dei tasks eseguibili usare l'argomento di
+        ant -projecthelp quando si richiama questo build.xml.
+
+-->
+
+<project name="serviscritto" xmlns:ivy="antlib:fr.jayasoft.ivy.ant" default="default" basedir=".">
+	<description>Build file di progetto</description>
+
+	<echo message="Loading build properties..." />
+	<property file="buildfiles/build.properties"/>
+	<property file="buildfiles/build.locale.properties"  />
+	<property file="buildfiles/${target}.properties"/>	
+
+	<path id="library.ref">
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+			<include name="**/*.zip" />
+		</fileset>
+	</path>
+
+	<path id="weblogic.ref">
+		<pathelement location="${application.server.jar}" />
+	</path>
+
+
+	<target name="default" description="Eseguire il build per 
+		l'environment specificato a linea di comando con -Dtarget=${target}
+		o per tutti gli environment (se non specificato).">
+
+		<condition property="first-call" value="distribution">
+			<not>
+				<equals arg1="${target}" arg2="$${target}" />
+			</not>
+		</condition>
+
+		<condition property="first-call" value="all-targets">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+
+		<echo message="target: ${target}" />
+		<echo message="first-call: ${first-call}" />
+
+		<antcall target="clean-all" />
+		<antcall target="${first-call}" />
+	</target>
+
+
+
+	<!-- -->
+	<!-- ############################################################ -->
+	<!-- # preparazione artefatto per il deploy su repart           # --> 
+	<!-- # (in dist/${target})                                      # -->
+	<!-- ############################################################ -->
+	<target name="package-deployable-artifact" depends="environment-config, _package-csiclientlibs-jar">
+		<mkdir dir="dist/csipiemonte"/>
+
+		<!-- artefatto per il servizio luoghi -->
+		<mkdir dir="dist/csipiemonte/serviscritto-luoghi-client/2.2.0"/>
+		<mkdir dir="dist/csipiemonte/serviscritto-luoghi-client/2.2.0/lib/"/>
+		<copydir dest="dist/csipiemonte/serviscritto-luoghi-client/2.2.0/lib" src="build/archives/${target}" includes="serviscritto-luoghi-client-2.2.0.jar"></copydir>
+		<copy file="build/temp/artifactory/luoghi/ivy-serviscritto-luoghi-client.xml" todir="dist/csipiemonte/serviscritto-luoghi-client/2.2.0"></copy>
+
+		<!-- artefatto per il servizio profilazione -->
+		<mkdir dir="dist/csipiemonte/serviscritto-profilazione-client/2.5.0"/>
+		<mkdir dir="dist/csipiemonte/serviscritto-profilazione-client/2.5.0/lib/"/>
+		<copydir dest="dist/csipiemonte/serviscritto-profilazione-client/2.5.0/lib" src="build/archives/${target}" includes="serviscritto-profilazione-client-2.5.0.jar"></copydir>
+		<copy file="build/temp/artifactory/profilazione/ivy-serviscritto-profilazione-client.xml" todir="dist/csipiemonte/serviscritto-profilazione-client/2.5.0"></copy>
+
+		<!-- artefatto per il servizio scuole -->
+		<mkdir dir="dist/csipiemonte/serviscritto-scuole-client/2.5.0"/>
+		<mkdir dir="dist/csipiemonte/serviscritto-scuole-client/2.5.0/lib/"/>
+		<copydir dest="dist/csipiemonte/serviscritto-scuole-client/2.5.0/lib" src="build/archives/${target}" includes="serviscritto-scuole-client-2.5.0.jar"></copydir>
+		<copy file="build/temp/artifactory/scuole/ivy-serviscritto-scuole-client.xml" todir="dist/csipiemonte/serviscritto-scuole-client/2.5.0"></copy>
+
+		<!-- artefatto per il servizio dati_tabellari -->
+		<mkdir dir="dist/csipiemonte/serviscritto-datitabellari-client/2.2.0"/>
+		<mkdir dir="dist/csipiemonte/serviscritto-datitabellari-client/2.2.0/lib/"/>
+		<copydir dest="dist/csipiemonte/serviscritto-datitabellari-client/2.2.0/lib" src="build/archives/${target}" includes="serviscritto-datitabellari-client-2.2.0.jar"></copydir>
+		<copy file="build/temp/artifactory/dati_tabellari/ivy-serviscritto-datitabellari-client.xml" todir="dist/csipiemonte/serviscritto-datitabellari-client/2.2.0"></copy>
+
+		<!-- artefatto per il servizio domanda -->
+		<mkdir dir="dist/csipiemonte/serviscritto-domanda-client/2.6.0"/>
+		<mkdir dir="dist/csipiemonte/serviscritto-domanda-client/2.6.0/lib/"/>
+		<copydir dest="dist/csipiemonte/serviscritto-domanda-client/2.6.0/lib" src="build/archives/${target}" includes="serviscritto-domanda-client-2.6.0.jar"></copydir>
+		<copy file="build/temp/artifactory/domanda/ivy-serviscritto-domanda-client.xml" todir="dist/csipiemonte/serviscritto-domanda-client/2.6.0"></copy>
+
+		<zip destfile="dist/iscritto-serviscritto-artifacts.zip" basedir="dist" includes="csipiemonte/**">
+		</zip>
+	</target>
+
+
+	<target name="all-targets" description="Esegue il build per le varie distribuzioni in sequenza.">
+	<!--PROTECTED REGION ID(R-312021802) ENABLED START-->
+		<!-- inserire il richiamo dei build per gli ambienti previsti dal progetto -->
+		<antcall target="distribution">
+			<param name="target" value="dev" />
+		</antcall>
+
+		<antcall target="distribution">
+			<param name="target" value="tst-[cliente]" />
+		</antcall>
+
+		<antcall target="distribution">
+			<param name="target" value="coll-[cliente]" />
+		</antcall>
+
+		<antcall target="distribution">
+			<param name="target" value="prod-[cliente]" />
+		</antcall>
+	<!--PROTECTED REGION END-->
+	</target>
+
+
+	<target name="package-all" description="esegue il packaging di ogni componente del prodotto" >
+		<antcall target="package-ear" />
+	</target>
+
+	<target name="init" description="Inizializza lo script Ant.">
+		<tstamp />
+		<condition property="target" value="dev">
+			<equals arg1="${target}" arg2="$${target}" />
+		</condition>
+		<mkdir dir="${build}/classes" />
+		
+		<mkdir dir="${build}/temp/${target}/lib" />
+		<mkdir dir="${build}/archives/${target}" />
+		
+		<mkdir dir="${dist}/${target}" />
+		<mkdir dir="${build}/javadoc" />
+		<mkdir dir="${build}/jsp" />
+	</target>
+
+
+    
+	<target name="resolve-dependencies" description="carica le librerie dal repository remoto">
+		<ivy:configure file="buildfiles/ivyconf.xml" />
+		<ivy:resolve file="buildfiles/ivy.xml" />
+	</target>
+
+	<!-- caricamento delle dipendenze mediante Ivy 2.0.0
+	     in conformita' con le Linee Guida Build V05
+	 -->
+	<target name="load-dependencies" depends="resolve-dependencies"
+			description="Risolve le dipendenze esterne.">
+		<ivy:retrieve pattern="lib/[artifact].[type]" />
+	</target>
+
+
+    <!-- compilazione dei sorgenti java. N.B: le classi di "frontiera" devono
+         essere compilate con target JDK1.3 per permettere la fruibilita' del
+         servizio da parte di fruitori che utilizzano JRE anteriori all'1.5.
+     -->
+	<target name="compile-all" description="Compila tutti i sorgenti."
+		depends="init, load-dependencies" >
+
+		<echo message="===> Target: ${target}" />		
+		
+		<!-- compilazione dei sorgenti delle interfacce (target 1.3)-->
+		<javac srcdir="${src}/java" 
+			destdir="${build}/classes" 
+			optimize="on" 
+			deprecation="on"
+			compiler="modern"
+			target="1.3"
+			source="1.3"
+			includes="it/csi/**/interfacecsi/**,it.csi/**/dto/**,it/csi/**/exception/**"
+			>
+			<classpath refid="library.ref"/>
+		</javac>
+		
+		<!-- compilazione degli altri sorgenti -->
+		<javac srcdir="${src}/java" 
+			destdir="${build}/classes" 
+			optimize="on" 
+			deprecation="on"
+			compiler="modern"
+			debug="on" debuglevel="lines,vars,source"
+			excludes="it/csi/**/interfacescsi/**,it/csi/**/entity/**,it/csi/**/exception/**"
+			>
+			<classpath refid="library.ref"/>
+		</javac>
+
+		<!-- compilazione delle classi di test -->
+		<javac srcdir="${test}/java" 
+			destdir="${build}/classes" 
+			optimize="on" 
+			deprecation="on"
+			compiler="modern"
+			debug="on" debuglevel="lines,vars,source"
+			>
+			<classpath refid="library.ref"/>
+		</javac>
+		
+		<copy todir="${build}/classes">
+			<fileset dir="${src}/java" excludes="**/*.java*,**/*.jbx*"/>
+		</copy>
+		
+		<copy todir="${build}/classes">
+   			<fileset dir="${test}/java" excludes="**/*.java*,**/*.jbx*"/>
+		</copy>
+
+	</target>
+
+	<!-- creazione pacchetto classi/risorse comuni a tutti i servizi -->
+    <target name="_package-common-classes" depends="compile-all">
+    	<jar destfile="${build}/archives/${target}/serviscritto-common.jar"
+			basedir="${build}/classes"
+			includes="it/csi/iscritto/serviscritto/business/**">
+			<exclude name="it/csi/iscritto/serviscritto/business/luoghi/**" />
+			<exclude name="it/csi/iscritto/serviscritto/business/profilazione/**" />
+			<exclude name="it/csi/iscritto/serviscritto/business/scuole/**" />
+			<exclude name="it/csi/iscritto/serviscritto/business/datitabellari/**" />
+			<exclude name="it/csi/iscritto/serviscritto/business/domanda/**" />
+		</jar>
+    </target>
+    
+    <target name="_package-csiclientlibs-jar" depends="compile-all" 
+    description="costruisce tutti i jar delle librerie client di CSI per ogni servizio"
+    >
+       
+       <!-- costruzione delle librerie client per il servizio luoghi -->
+       <antcall target="_csiclientlib-jar">
+         <param name="service.name" value="luoghi" />
+         <param name="service.ver" value="2.2" />
+       </antcall>
+       
+       <!-- costruzione delle librerie client per il servizio profilazione -->
+       <antcall target="_csiclientlib-jar">
+         <param name="service.name" value="profilazione" />
+         <param name="service.ver" value="2.5" />
+       </antcall>
+       
+       <!-- costruzione delle librerie client per il servizio scuole -->
+       <antcall target="_csiclientlib-jar">
+         <param name="service.name" value="scuole" />
+         <param name="service.ver" value="2.5" />
+       </antcall>
+       
+       <!-- costruzione delle librerie client per il servizio dati_tabellari -->
+       <antcall target="_csiclientlib-jar">
+         <param name="service.name" value="datitabellari" />
+         <param name="service.ver" value="2.2" />
+       </antcall>
+       
+       <!-- costruzione delle librerie client per il servizio domanda -->
+       <antcall target="_csiclientlib-jar">
+         <param name="service.name" value="domanda" />
+         <param name="service.ver" value="2.6" />
+       </antcall>
+       
+    </target>
+    
+    <target name="_csiclientlib-jar" description="genera le librerie client di ciascun servizio">
+    	<!-- prende come parametro il codice servizio service.name e la versione service.ver (deve essere a 2 cifre!!!) -->
+    	<jar destfile="${build}/archives/${target}/serviscritto-${service.name}-client-${service.ver}.0.jar"
+			basedir="${build}/classes"
+			includes="it/csi/iscritto/serviscritto/dto/${service.name}/**,
+			          it/csi/iscritto/serviscritto/exception/${service.name}/**,
+			          it/csi/iscritto/serviscritto/interfacecsi/${service.name}/**">
+		</jar>
+    </target>
+	
+
+	<target name="environment-config" description="Predispone le configurazioni dipendenti dall'ambiente.">
+		<copy todir="build/temp" overwrite="true">
+			<fileset file="${conf}/ear/*.xml" />
+		</copy>
+		
+		<copy todir="build/temp" overwrite="true">
+			<fileset file="${conf}/**" />
+		</copy>
+		
+		
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.luoghi.pa.url@"  value="${iscritto.serviscritto.luoghi.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.profilazione.pa.url@"  value="${iscritto.serviscritto.profilazione.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.scuole.pa.url@"  value="${iscritto.serviscritto.scuole.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.datitabellari.pa.url@"  value="${iscritto.serviscritto.datitabellari.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.luoghi.pa.url@"  value="${iscritto.serviscritto.luoghi.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.profilazione.pa.url@"  value="${iscritto.serviscritto.profilazione.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.scuole.pa.url@"  value="${iscritto.serviscritto.scuole.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.datitabellari.pa.url@"  value="${iscritto.serviscritto.datitabellari.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.luoghi.pa.url@"  value="${iscritto.serviscritto.luoghi.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.profilazione.pa.url@"  value="${iscritto.serviscritto.profilazione.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.scuole.pa.url@"  value="${iscritto.serviscritto.scuole.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.datitabellari.pa.url@"  value="${iscritto.serviscritto.datitabellari.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.luoghi.pa.url@"  value="${iscritto.serviscritto.luoghi.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.profilazione.pa.url@"  value="${iscritto.serviscritto.profilazione.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.scuole.pa.url@"  value="${iscritto.serviscritto.scuole.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.datitabellari.pa.url@"  value="${iscritto.serviscritto.datitabellari.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.luoghi.pa.url@"  value="${iscritto.serviscritto.luoghi.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.profilazione.pa.url@"  value="${iscritto.serviscritto.profilazione.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.scuole.pa.url@"  value="${iscritto.serviscritto.scuole.pa.url}"/>
+
+		<replace dir="${build}/temp/ejb" token="@iscritto.serviscritto.datitabellari.pa.url@"  value="${iscritto.serviscritto.datitabellari.pa.url}"/>
+
+		
+		
+			
+	<if>
+ 		<equals arg1="${enableClustering}" arg2="true" />
+ 	<then>
+	    <replace dir="${build}/temp/ejb" token="@@@@CLUSTER_AWARE@@@@"  value="&lt;clustered&gt;True&lt;/clustered&gt;">
+		    <include name="**/jboss*.xml"/>
+  		</replace>	
+  	</then>	
+  	<else>
+  		<replace dir="${build}/temp/ejb" token="@@@@CLUSTER_AWARE@@@@"  value="">
+		    <include name="**/jboss*.xml"/>
+  		</replace>
+  	</else>
+  	</if>	
+
+		
+		
+		<!--PROTECTED REGION ID(R-500117444) ENABLED START-->
+
+
+
+	  	<!-- CONFIGURAZIONE JNDI NAME - BEGIN -->
+		<!-- luoghi -->
+		<replace file="${build}/temp/ejb/luoghi/META-INF/luoghiDao-beans.xml"
+			token="@JNDI_NAME@"
+			value="${jndi.name}"/>
+
+		<!-- scuole -->
+		<replace file="${build}/temp/ejb/scuole/META-INF/scuoleDao-beans.xml"
+			token="@JNDI_NAME@"
+			value="${jndi.name}"/>
+
+		<!-- profilazione -->
+		<replace file="${build}/temp/ejb/profilazione/META-INF/profilazioneDao-beans.xml"
+			token="@JNDI_NAME@"
+			value="${jndi.name}"/>
+
+		<!-- datitabellari -->
+		<replace file="${build}/temp/ejb/datitabellari/META-INF/dati_tabellariDao-beans.xml"
+			token="@JNDI_NAME@"
+			value="${jndi.name}"/>
+
+		<!-- domanda -->
+		<replace file="${build}/temp/ejb/domanda/META-INF/domandaDao-beans.xml"
+			token="@JNDI_NAME@"
+			value="${jndi.name}"/>
+
+		<replace file="${build}/temp/ejb/domanda/META-INF/domandaDao-beans.xml"
+			token="@ENC_KEY@"
+			value="${iscritto.encryption.key}"/>
+	  	<!-- CONFIGURAZIONE JNDI NAME - END -->
+
+		<!-- CONFIGURAZIONE DATASOURCE - BEGIN -->
+		<echo message="copia il datasource nella cartella temporanea"></echo>
+	    <mkdir dir="${temp}/${target}/ds" />
+	    <copy todir="${temp}/${target}/ds">
+	        <fileset file="${conf}/tar/serviscritto-iscritto-ds.xml" />
+	    </copy>
+
+		<!-- eventuali replace -->
+
+	    <copy todir="${build}/archives/${target}">
+	        <fileset file="${temp}/${target}/ds/serviscritto-iscritto-ds.xml" />
+	    </copy>
+	    <delete dir="${temp}/${target}/ds" />
+		<!-- CONFIGURAZIONE DATASOURCE - END -->
+
+		<!--PROTECTED REGION END-->
+		
+	</target>
+
+	
+    
+    <target name="_package-all-soappabr-wars">
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    </target>
+    
+    <target name="_package-soappabr-war" >
+      <!-- prende in input i parametri component.name service.name binding.code -->
+      <mkdir dir="${temp}/${binding.code}/${service.name}/WEB-INF" />
+         
+		<war destfile="${build}/archives/${target}/${service.type}-${service.name}-${binding.code}.war"
+             webxml="${conf}/web/${binding.code}/${service.name}/WEB-INF/web.xml" 
+			 roundup= "false">
+			 <webinf file="${conf}/web/${binding.code}/${service.name}/WEB-INF/deploysoapejb*.xml" />
+			 <webinf file="${conf}/web/${binding.code}/${service.name}/WEB-INF/jboss-web.xml" />
+			 <webinf file="${conf}/web/${binding.code}/${service.name}/WEB-INF/weblogic.xml" />
+		</war>
+    </target>
+
+    <!-- costruisce i war dei wsfad -->
+    <target name="_package-all-wsfad-wars">
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    	
+    	
+    	
+    
+    </target>
+    
+    <target name="_package-wsfad-war" >
+      <!-- prende in input i parametri component.name service.name binding.code -->
+      <mkdir dir="${temp}/${binding.code}/${service.name}/WEB-INF" />
+         
+		<war destfile="${build}/archives/${target}/${service.type}-${service.name}-${binding.code}.war"
+             webxml="${conf}/web/${binding.code}/${service.name}/WEB-INF/web.xml" 
+			 roundup= "false">
+			 <webinf file="${conf}/web/${binding.code}/${service.name}/WEB-INF/server-config.wsdd" />
+			 <webinf file="${conf}/web/${binding.code}/${service.name}/WEB-INF/jboss-web.xml" />
+			 <webinf file="${conf}/web/${binding.code}/${service.name}/WEB-INF/weblogic.xml" />
+			 <classes dir="${src}/web/${binding.code}/${service.name}" 
+				includes="defpdelegata_embedded*.xml" />
+			<lib dir="${lib}" includes="${wsfad.libs}" />
+			<fileset dir="${src}/web/${binding.code}/${service.name}" includes="**">			
+			</fileset>
+		</war>
+    </target>
+    
+    
+    <!-- costruisce tutti gli ejb jar relativi alle PA ejb (1 per servizio esposto)-->
+    <target name="_ejbpa-ejb-jars" depends="compile-all">
+    	
+    	<!-- binding ejb del servizio luoghi -->
+    	
+	
+        <!-- costruzione dell'ejb-jar del binding luoghi.ejbpa -->
+		<antcall target="_ejbpa-ejb-jar">
+    	    <param name="service.name" value="luoghi" />
+    		<param name="service.version" value="2.2" />
+    		<param name="binding.name" value="ejbpa" />
+    		<param name="service.type" value="appl" />
+    	</antcall>
+	
+
+
+
+    	<!-- binding ejb del servizio profilazione -->
+    	
+	
+        <!-- costruzione dell'ejb-jar del binding profilazione.ejbpa -->
+		<antcall target="_ejbpa-ejb-jar">
+    	    <param name="service.name" value="profilazione" />
+    		<param name="service.version" value="2.5" />
+    		<param name="binding.name" value="ejbpa" />
+    		<param name="service.type" value="appl" />
+    	</antcall>
+	
+
+
+
+    	<!-- binding ejb del servizio scuole -->
+    	
+	
+        <!-- costruzione dell'ejb-jar del binding scuole.ejbpa -->
+		<antcall target="_ejbpa-ejb-jar">
+    	    <param name="service.name" value="scuole" />
+    		<param name="service.version" value="2.5" />
+    		<param name="binding.name" value="ejbpa" />
+    		<param name="service.type" value="appl" />
+    	</antcall>
+	
+
+
+
+    	<!-- binding ejb del servizio dati_tabellari -->
+    	
+	
+        <!-- costruzione dell'ejb-jar del binding dati_tabellari.ejbpa -->
+		<antcall target="_ejbpa-ejb-jar">
+    	    <param name="service.name" value="datitabellari" />
+    		<param name="service.version" value="2.2" />
+    		<param name="binding.name" value="ejbpa" />
+    		<param name="service.type" value="appl" />
+    	</antcall>
+	
+
+
+
+    	<!-- binding ejb del servizio domanda -->
+    	
+	
+        <!-- costruzione dell'ejb-jar del binding domanda.ejbpa -->
+		<antcall target="_ejbpa-ejb-jar">
+    	    <param name="service.name" value="domanda" />
+    		<param name="service.version" value="2.6" />
+    		<param name="binding.name" value="ejbpa" />
+    		<param name="service.type" value="appl" />
+    	</antcall>
+	
+
+
+	
+    </target>
+	
+	
+	<target name="_ejbpa-ejb-jar" description="Genera il jar per la PA ejb di servizi APPL o INFR" >
+	    <!-- prende come parametro il codice del servizio e del binding -->
+	    <!-- service.name -->
+	    <!-- service.version (serve per il rif. al client jar)-->
+	    <!-- service.type ("orch", "other-than-orch") -->
+	    <!-- binding.name -->
+		
+        
+        <if>
+ 			<equals arg1="${service.type}" arg2="orch" />
+ 		<then>
+			<jar jarfile="${build}/archives/${target}/${service.type}-${service.name}-${binding.name}.jar" >
+				<fileset dir="${build}/classes">
+					<include name="it/csi/*/serviscritto/business/${service.name}/**"/>
+					<include name="it/csi/*/serviscritto/integration/${service.name}/**"/>
+				</fileset>						
+
+				<fileset dir="${conf}/ejb/${service.name}">
+					<include name="defpa*"/>
+					<include name="checked_resources*.xml"/>
+					<include name="defqmgr_*" />
+				</fileset>
+			
+				<!-- config. svcflow -->
+				<fileset dir="${conf}/orchestrator/descriptor/${service.name}">
+					<include name="*.xml"/>
+				</fileset>
+			
+				<!-- risorse soggette a sostituzione -->
+				<fileset dir="${build}/temp/ejb/${service.name}">
+					<include name="**/*.xml"/>
+					<include name="**/*.properties"/>
+				</fileset>		
+								
+			    <metainf dir="${build}/temp/ejb/${service.name}/META-INF" >
+					<patternset id="all-xml" >
+						<include name="**/*.xml"/>
+					</patternset>
+				</metainf>	
+			</jar>
+		</then>
+		<else>
+			<jar jarfile="${build}/archives/${target}/${service.type}-${service.name}-${binding.name}.jar" >
+				<fileset dir="${build}/classes">
+					<include name="it/csi/*/serviscritto/business/${service.name}/**"/>
+					<include name="it/csi/*/serviscritto/integration/${service.name}/**"/>
+				</fileset>						
+						
+				<!-- risorse soggette a sostituzione -->
+				<fileset dir="${temp}/ejb/${service.name}">
+					<include name="*.xml"/>
+					<include name="*.properties"/>
+				</fileset>
+				
+				<metainf dir="${temp}/ejb/${service.name}/META-INF" >
+					<patternset id="all-xml" >
+						<include name="**/*.xml"/>
+					</patternset>
+				</metainf>
+				
+			</jar>		
+		</else>
+		</if>
+	</target>
+
+
+	<target name="_orch_ejbpa-ejb-jar" description="Genera il jar per la PA ejb di servizi ORCH" >
+	    <!-- prende come parametro il codice del servizio e del binding -->
+	    <!-- service.name -->
+	    <!-- service.version (serve per il rif. al client jar)-->
+	    <!-- binding.name -->
+		
+        
+		<jar jarfile="${build}/archives/${target}/orch-${service.name}${binding.name}ejb.jar" >
+			<fileset dir="${build}/classes">
+				<include name="it/csi/*/serviscritto/business/${service.name}/**"/>
+				<include name="it/csi/*/serviscritto/integration/${service.name}/**"/>
+			</fileset>						
+
+			<fileset dir="${conf}/ejb/${service.name}">
+				<include name="defpa*"/>
+				<include name="checked_resources*.xml"/>
+				<include name="defqmgr_*" />
+			</fileset>
+			
+			<!-- config. svcflow -->
+			<fileset dir="${conf}/orchestrator/descriptor/${service.name}">
+				<include name="*.xml"/>
+			</fileset>
+			
+			<metainf dir="${conf}/ejb/${service.name}/META-INF" >
+				<patternset id="all-xml" >
+					<include name="**/*.xml"/>
+				</patternset>
+			</metainf>
+		</jar>
+	</target>
+
+	<target name="integration-jar" description="Genera il jar per lo strato integration." >
+
+		<copy todir="${build}/classes/it/csi/${project}/integration/services/iride" file="${conf}/pd/iride/defPDIrideEJB.xml" />
+		<replace file="${build}/classes/it/csi/${project}/integration/services/iride/defPDIrideEJB.xml" token="@IRIDE_URL@" value="${iride.url.t3}" />
+			
+		<jar jarfile="${build}/archives/${target}/integration.jar">
+			<fileset dir="${build}/classes">
+				<include name="it/csi/${project}/integration/**"/>
+			</fileset>
+			
+			<manifest>
+					<attribute name="Class-Path" value="commons.jar lib/util-perf-1.0.0.jar"/>
+			</manifest>
+		</jar>
+	</target>
+
+    <!-- generazione del pacchetto sar per lo startuplistener di jboss-->
+	<target name="_package-luoghi-sar" description="genera il pacchetto sar">
+		<jar destfile="${build}/archives/${target}/luoghi-startup.sar"
+			basedir="${build}/classes"
+	    	includes="src/java/it/csi/iscritto/serviscritto/business/luoghi/spring/startup/**">
+	    	<fileset dir="${conf}/sar/luoghi">
+	    		<include name="**"/>	    							
+	    	</fileset>
+		</jar>
+	</target>
+    
+    <!-- generazione del pacchetto sar per lo startuplistener di jboss-->
+	<target name="_package-profilazione-sar" description="genera il pacchetto sar">
+		<jar destfile="${build}/archives/${target}/profilazione-startup.sar"
+			basedir="${build}/classes"
+	    	includes="src/java/it/csi/iscritto/serviscritto/business/profilazione/spring/startup/**">
+	    	<fileset dir="${conf}/sar/profilazione">
+	    		<include name="**"/>	    							
+	    	</fileset>
+		</jar>
+	</target>
+    
+    <!-- generazione del pacchetto sar per lo startuplistener di jboss-->
+	<target name="_package-scuole-sar" description="genera il pacchetto sar">
+		<jar destfile="${build}/archives/${target}/scuole-startup.sar"
+			basedir="${build}/classes"
+	    	includes="src/java/it/csi/iscritto/serviscritto/business/scuole/spring/startup/**">
+	    	<fileset dir="${conf}/sar/scuole">
+	    		<include name="**"/>	    							
+	    	</fileset>
+		</jar>
+	</target>
+    
+    <!-- generazione del pacchetto sar per lo startuplistener di jboss-->
+	<target name="_package-dati_tabellari-sar" description="genera il pacchetto sar">
+		<jar destfile="${build}/archives/${target}/dati_tabellari-startup.sar"
+			basedir="${build}/classes"
+	    	includes="src/java/it/csi/iscritto/serviscritto/business/datitabellari/spring/startup/**">
+	    	<fileset dir="${conf}/sar/dati_tabellari">
+	    		<include name="**"/>	    							
+	    	</fileset>
+		</jar>
+	</target>
+    
+    <!-- generazione del pacchetto sar per lo startuplistener di jboss-->
+	<target name="_package-domanda-sar" description="genera il pacchetto sar">
+		<jar destfile="${build}/archives/${target}/domanda-startup.sar"
+			basedir="${build}/classes"
+	    	includes="src/java/it/csi/iscritto/serviscritto/business/domanda/spring/startup/**">
+	    	<fileset dir="${conf}/sar/domanda">
+	    		<include name="**"/>	    							
+	    	</fileset>
+		</jar>
+	</target>
+    
+	
+	<target name="package-ear"  description="costruisce l&apos;ear"  
+		depends="compile-all, environment-config, _package-common-classes, _package-csiclientlibs-jar, _ejbpa-ejb-jars, _package-all-soappabr-wars, _package-all-wsfad-wars">
+
+		<copy todir="${temp}/${target}/lib">
+		    <!-- librerie infrastrutturali o client di servizi fruiti -->
+			<fileset dir="${lib}"
+				includes="${app.support.libs} ${svcflow.libs} ${extra.app.libs} ${cooptrace.libs} "
+				excludes="${excludes.libs}"
+			/>
+			<fileset dir="${build}/archives/${target}" includes="*client*.jar *common.jar" />
+		</copy>
+
+		<antcall target="_package-luoghi-sar"/>
+		<antcall target="_package-profilazione-sar"/>
+		<antcall target="_package-scuole-sar"/>
+		<antcall target="_package-dati_tabellari-sar"/>
+		<antcall target="_package-domanda-sar"/>
+		<ear appxml="${temp}/application.xml" destfile="${build}/archives/${target}/serviscritto.ear">
+			<fileset dir="${build}/archives/${target}" includes="*.jar,*.war, *.sar" excludes="*client*.jar,*-common.jar"/>
+			<fileset dir="${temp}/${target}" >
+				<include name="**/*"/>
+			</fileset>
+			<fileset dir="${temp}/ear" >
+				<include name="META-INF/*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Built-Date" value="${DSTAMP}" />
+				<attribute name="Target" value="${target}" />
+
+			</manifest>
+		</ear>
+	</target>
+
+
+	<target name="distribution" description="Costruisce il tar per la distribuzione." 
+		depends="package-all">
+
+		<echo>====== Creating distribution for ${target} ...</echo>
+		<echo>====== Basedir: ${build}/archives/${target} ... </echo>
+<!--PROTECTED REGION ID(R131107997) ENABLED START-->
+		<!-- inserire qui eventuali statement antcall aggiuntivi da invocare
+		     nel processo di distribuzione del tar -->
+<!--PROTECTED REGION END-->
+
+		<!-- Configurazione del registry -->
+		<antcall target="_configure-registry"/>
+
+		<!-- creazione pacchetto distribution -->
+		<tar tarfile="${dist}/${target}/${project}-${version}.tar" 
+	         basedir="${build}/archives/${target}"
+	         includes="*.ear,*.zip" >
+			<tarfileset dir="buildfiles">
+				<include name="readme.txt"/>
+				<!--PROTECTED REGION ID(R349165555) ENABLED START-->
+				<!-- inserire qui eventuali statement per includere oggetti extra nel tar -->
+				<!--PROTECTED REGION END-->
+			</tarfileset>
+			<tarfileset dir="${temp}/tar">
+				<include name="readme.txt"/>
+				<!--PROTECTED REGION ID(R-1155693432) ENABLED START-->
+				<include name="*-iscritto-ds.xml"/>
+				<!--PROTECTED REGION END-->
+			</tarfileset>
+		</tar>
+
+		<delete>
+			<fileset dir="${dist}/${target}" excludes="**/*.tar" />
+		</delete>
+
+	</target>
+
+
+	
+	<!-- clean targets -->
+	
+	<target name="clean-all"
+	    	description="Rimuove tutte le cartelle temporanee."
+    	depends="clean-archives, clean-cache, clean-classes, clean-dist, clean-javadoc, clean-temp"/>
+
+	<target name="clean-cache"
+	    	description="Rimuove la cartella di cache di Ivy e la lib.">
+
+		<delete dir="${build}/cache" />
+		<delete dir="lib" />
+
+	</target>
+
+	<target name="clean-temp"
+    		description="Rimuove la cartella dei files temporanei di build.">
+
+		<delete dir="${temp}" />
+
+	</target>
+
+
+	<target name="clean-archives"
+	    	description="Rimuove la cartella degli archivi (war, ear, ...).">
+
+		<delete dir="${build}/archives"/>
+
+	</target>
+
+	<target name="clean-dist"
+	    	description="Rimuove la cartella delle distribuzioni.">
+
+		<delete dir="${dist}"/>
+
+	</target>
+
+
+
+	<target name="clean-classes"
+	    	description="Rimuove la cartella dei sorgenti compilati.">
+
+		<delete dir="${build}/classes"/>
+
+	</target>
+
+
+	<target name="clean-javadoc"
+			description="Rimuove la cartella temporanea dei javadoc.">
+
+		<delete dir="${build}/javadoc"/>
+
+	</target>
+
+
+	
+
+	<target name="_clean-web-inf"
+			description="Rimuove il contenuto di lib e classes della web application (per run locali).">
+
+		<delete dir="${web}/WEB-INF/classes" />
+		<delete dir="${web}/WEB-INF/lib" />
+
+	</target>
+
+
+	<!-- imported tasks from other files -->
+
+	<target name="javadoc" depends="init"
+    		description="Genera la documentazione javadoc.">
+
+		<ant antfile="buildfiles/build.javadoc.xml" target="javadoc"/>
+
+	</target>
+
+
+	<!--<target name="_copy-to-web-inf"
+			description="Copia le classi e la lib sotto WEB-INF (per run locali)."
+                        depends="_clean-web-inf, compile-all">
+
+		<copy todir="${web}/web/samplecsi/WEB-INF/classes">
+			<fileset dir="${build}/classes">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${src}/web/samplecsi/WEB-INF/lib">
+			<fileset dir="${lib}">
+				<exclude name="weblogic*.jar"/>
+			</fileset>
+		</copy>
+
+	</target>-->
+
+
+	<target name="about" description="Visualizza l'elenco dei target pubblici dello script." >
+		<loadproperties srcfile="buildfiles/build.properties" />
+		<loadfile property="about" srcfile="buildfiles/about.txt" />
+		<echo message="${about}" />
+	</target>
+
+	<target name="about-custom" description="Visualizza l'elenco di tutti i target, pubblici e privati (equivalente a 'ant -projecthelp')">
+		<loadproperties srcfile="buildfiles/build.properties" />
+		<loadfile property="about-custom" srcfile="buildfiles/about-custom.txt" />
+		<echo message="${about-custom}" />
+		<java classname="org.apache.tools.ant.Main">
+			<arg value="-projecthelp" />
+		</java>
+	</target>
+
+	<target name="show-vars" depends="init"
+	          description="Visualizza tutte le variabili impostate nei file di properties e/o da linea di comando">
+		<echo message="*****************************************"/>
+		<echo message="********  ${project} environment  *******" />
+		<echo message="*****************************************"/>
+		<echoproperties />
+		<echo />
+		<echo />
+		<echo message="*****************************************"/>
+		<echo message="********    java properties      *******" />
+		<echo message="*****************************************"/>
+		<echoproperties prefix="java."/>
+
+	</target>
+
+	<target name="__download-libs">
+		<delete dir="lib" />
+		<antcall target="load-dependencies" />
+	</target>
+
+
+	<!-- Configurazione registry -->
+	<target name="_configure-registry">
+		<!-- sostituisce le variabili -->
+		<antcall target="_replace-registry-vars" />
+		
+		<!-- REGISTRY -->		
+		<zip destfile="${build}/archives/${target}/${project}-reg-${version}.zip">
+			<zipfileset dir="${temp}/registry">
+				<include name="*/**"/>
+			</zipfileset>
+		</zip>
+
+
+	</target>
+
+	<target name="_replace-registry-vars">
+		<!-- REGISTRY -->
+		<replace dir="${temp}/registry">
+			<replacefilter token="@rilascio.ambiente@" value="${rilascio.ambiente}"/>
+			<replacefilter token="@rilascio.cliente@" value="${rilascio.cliente}"/>
+			<replacefilter token="@rilascio.istanza@" value="${rilascio.istanza}"/>
+			<replacefilter token="@prodotto.descrizione@" value="${prodotto.descrizione}"/>
+			<replacefilter token="@componente.descrizione@" value="${componente.descrizione}"/>
+			<replacefilter token="@iscritto.serviscritto.luoghi.pa.url@" value="${iscritto.serviscritto.luoghi.pa.url}"/>
+			<replacefilter token="@iscritto.serviscritto.profilazione.pa.url@" value="${iscritto.serviscritto.profilazione.pa.url}"/>
+			<replacefilter token="@iscritto.serviscritto.scuole.pa.url@" value="${iscritto.serviscritto.scuole.pa.url}"/>
+			<replacefilter token="@iscritto.serviscritto.datitabellari.pa.url@" value="${iscritto.serviscritto.datitabellari.pa.url}"/>
+			<replacefilter token="@iscritto.serviscritto.domanda.pa.url@" value="${iscritto.serviscritto.domanda.pa.url}"/>
+		</replace>	
+
+
+	</target>
+
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+
+    <!--PROTECTED REGION ID(R388497607) ENABLED START-->
+    <!-- inserire qui eventuali target extra -->
+    <!--PROTECTED REGION END-->
+</project>

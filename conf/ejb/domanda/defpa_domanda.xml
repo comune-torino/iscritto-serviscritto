@@ -1,0 +1,26 @@
+<porta-applicativa name="serviscritto.DomandaPA"
+	public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.domanda.DomandaSrv">
+
+	<listener class="it.csi.csi.porte.ejb20.PortaApplicativaEJB" listening-url="**NOT USED IN THIS BINDING TYPE**" />
+
+	<adapter class="it.csi.csi.wrapper.StatelessEJBAdapter">
+		<properties>
+			<!--<property name="jndi-name"
+				value="serviscritto.ejb.DomandaSrv" />-->
+			<property name="jndi-name"
+				value="java:comp/env/DomandaBean" />				
+			<property name="home-class"
+				value="it.csi.iscritto.serviscritto.business.domanda.DomandaLocalHome" />
+			<property name="local-class"
+				value="it.csi.iscritto.serviscritto.business.domanda.DomandaLocal" />
+		</properties>
+	</adapter>
+	<options>
+    	<pre-function-handler-list>
+    	
+		</pre-function-handler-list>
+		<post-function-handler-list>
+		
+		</post-function-handler-list>
+	</options>
+</porta-applicativa>

@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+
+	<enterprise-beans>
+	    <!-- 
+			===================================================================
+			Implementazione del servizio
+			===================================================================
+		-->
+		<session>
+			<ejb-name>DomandaBean</ejb-name>
+			<!--<home>it.csi.iscritto.serviscritto.business.domanda.DomandaHome</home>
+			<remote>it.csi.iscritto.serviscritto.business.domanda.DomandaRemote</remote>-->
+			<local-home>it.csi.iscritto.serviscritto.business.domanda.DomandaLocalHome</local-home>
+			<local>it.csi.iscritto.serviscritto.business.domanda.DomandaLocal</local>
+			<ejb-class>it.csi.iscritto.serviscritto.business.domanda.DomandaBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>				
+		</session>				
+		
+		<!-- 
+			===================================================================
+			Porta applicativa del servizio
+			===================================================================
+		-->
+		<session>
+			<ejb-name>DomandaPA</ejb-name>
+			<home>it.csi.csi.porte.ejb20.PortaApplicativaHome</home>
+			<remote>it.csi.csi.porte.ejb20.PortaApplicativaEJB</remote>
+			<ejb-class>
+				it.csi.csi.porte.ejb20.PortaApplicativaBean
+			</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>defpa</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>/defpa_domanda.xml</env-entry-value>
+			</env-entry>
+			<ejb-local-ref>
+				<description>reference all bean che implementa il servizio</description>
+				<ejb-ref-name>DomandaBean</ejb-ref-name>
+				<ejb-ref-type>Session</ejb-ref-type>
+				<local-home>it.csi.iscritto.serviscritto.business.domanda.DomandaLocalHome</local-home>
+				<local>it.csi.iscritto.serviscritto.business.domanda.DomandaLocal</local>
+				<ejb-link>DomandaBean</ejb-link>
+			</ejb-local-ref>
+		</session>
+		
+		
+		
+	</enterprise-beans>
+	
+	<assembly-descriptor>
+		<!-- ruoli di sicurezza -->
+		
+		
+		<!-- transazioni -->
+		
+			
+		<container-transaction>
+		
+		
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoDomandeNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoDomandeMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getTestataDomanda</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoStatiDomanda</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertLogErroreDomandaNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertLogErroreDomandaMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>checkIdDomanda</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>checkRichiedenteDomandaNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>checkRichiedenteDomandaMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getStoricoCondizioniPunteggio</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoAllegatiDomanda</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoVerbaliNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoVerbaliMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoGeneraliNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoGeneraliMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandeNidoDaVerificare</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandeMaternaDaVerificare</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getTestataDomandaAccettazione</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getParametriUltimaGraduatoriaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getParametriUltimaGraduatoriaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoGraduatorieNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoGraduatorieMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoStepGraduatoriaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoStepGraduatoriaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>ricercaGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getParametriGraduatoriaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getParametriGraduatoriaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandeNidoNonIstruite</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandeMaternaNonIstruite</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getVerifichePreventivePendenti</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoAnniScolastici</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoClassiNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoClassiMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoNidiDse</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getElencoMaterneDse</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getResidenzeForzateNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getResidenzeForzateMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getGraduatoriaCompletaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getGraduatoriaCompletaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoStepGraduatorieNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getInfoStepGraduatorieMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getGraduatoriaApprovazioneNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getGraduatoriaApprovazioneMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>generaRicevutaAccettazione</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getFasceEta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getAnagraficaGraduatorie</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getAnagraficaGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getAnagraficaStepGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getAnagraficaEta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getTipiFasceEta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getReportPostiLiberi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getPreferenzeScuole</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getFlagBloccoGraduatoriaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getFlagBloccoGraduatoriaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getTestataDomandaAccettazioneMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getReportDomandeScuolaResidenza</method-name>
+			</method>
+		
+		<trans-attribute>NotSupported</trans-attribute>
+		</container-transaction>
+						
+		
+				
+		
+			
+		<container-transaction>
+			
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandaNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandaMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertDomandaNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertDomandaMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>checkDomandaNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>checkDomandaMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>deleteDomanda</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getAllegato</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>deleteAllegato</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertAllegatoList</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>invioDomandaNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>invioDomandaMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandeIstruttoriaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>getDomandeIstruttoriaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>modificaCondizionePunteggioNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>modificaCondizionePunteggioMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>modificaStatoNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>modificaStatoMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>accettaPreferenzaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>accettaPreferenzaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>rifiutaPreferenzaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>rifiutaPreferenzaMaterne</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>calcolaGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertClasseNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertClasseMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>updateClasseNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>updateClasseMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>deleteClasseNido</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>deleteClasseMaterna</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>updateFlagAmmissioni</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertNidoFuoriTermine</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertMaternaFuoriTermine</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>generaRicevuta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertAnagraficaGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>updateAnagraficaGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertAnagraficaStepGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>updateAnagraficaStepGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>deleteAnagraficaStepGraduatoria</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>insertAnagraficaEta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>updateAnagraficaEta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>deleteAnagraficaEta</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>modificaStatoScuolaPreferenza</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>setFlagBloccoGraduatoriaNidi</method-name>
+			</method>
+		
+			<method>
+				<ejb-name>DomandaBean</ejb-name>
+				<method-name>setFlagBloccoGraduatoriaMaterne</method-name>
+			</method>
+		
+		<trans-attribute>RequiresNew</trans-attribute>
+		</container-transaction>
+						
+		
+		
+		<container-transaction>
+			<method>
+				<ejb-name>DomandaPA</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>NotSupported</trans-attribute>
+		</container-transaction>
+	</assembly-descriptor>
+	
+</ejb-jar>

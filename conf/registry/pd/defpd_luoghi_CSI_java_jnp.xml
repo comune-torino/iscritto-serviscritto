@@ -1,0 +1,64 @@
+<porta-delegata name="serviscritto.luoghi">
+	<services>
+<service name="luoghi"
+         public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.luoghi.LuoghiSrv" 
+         top-version="2.2.0">
+	<operations>
+<operation name="findStatiAttiviAllaData" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="data" type="java.util.Date" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.luoghi.Luogo[]" />
+</operation>
+<operation name="findRegioniAttiveAllaData" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="data" type="java.util.Date" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.luoghi.Luogo[]" />
+</operation>
+<operation name="findProvinceAttiveAllaData" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="data" type="java.util.Date" />
+<param name="istatRegione" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.luoghi.Luogo[]" />
+</operation>
+<operation name="findComuniAttiviAllaData" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="data" type="java.util.Date" />
+<param name="istatProvincia" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.luoghi.Luogo[]" />
+</operation>
+<operation name="findByIstatComuneAllaData" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="data" type="java.util.Date" />
+<param name="istatComune" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.luoghi.Luogo[]" />
+</operation>
+<operation name="findByIstatStatoAllaData" type="synch-call" since="2.1.0">
+	<param-list>
+<param name="data" type="java.util.Date" />
+<param name="istatStato" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.luoghi.Luogo" />
+</operation>
+	</operations>
+</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="luoghi"
+			              class="it.csi.csi.porte.ejb20.PortaDelegataEJB"
+			              url-pa="serviscritto.ejb.ApplLuoghiPA"
+			              url-qm="serviscritto.ejb.ApplLuoghiQMGR">
+				<properties>
+					<property name="java.naming.provider.url" value="@iscritto.serviscritto.luoghi.pa.url@"/>
+				</properties>
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<queue-manager url=""/>
+	</config>
+</porta-delegata>

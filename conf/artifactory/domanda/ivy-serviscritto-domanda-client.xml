@@ -1,0 +1,9 @@
+<ivy-module version="1.0">
+    <info
+        organisation="csipiemonte"
+        module="serviscritto-domanda-client"
+        revision="2.6.0" />
+    <publications>
+        <artifact name="serviscritto-domanda-client-2.6.0" type="jar" />   
+    </publications>
+</ivy-module>

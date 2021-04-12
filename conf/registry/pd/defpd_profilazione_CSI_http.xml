@@ -1,0 +1,59 @@
+<porta-delegata name="serviscritto.profilazione">
+	<services>
+<service name="profilazione"
+         public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.profilazione.ProfilazioneSrv" 
+         top-version="1.0.0">
+	<operations>
+<operation name="getProfiloOperatore" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="codiceFiscale" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Profilo" />
+</operation>
+<operation name="getFunzioniAbilitateOperatore" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="codiceFiscale" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Funzione[]" />
+</operation>
+<operation name="getAttivitaAbilitateOperatore" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="codiceFiscale" type="java.lang.String" />
+<param name="codiceFunzione" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Attivita[]" />
+</operation>
+<operation name="getPrivilegiOperatore" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+<param name="codiceFiscale" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.PrivilegioOperatore[]" />
+</operation>
+<operation name="getCondizioniPunteggio" type="synch-call" since="1.0.0">
+	<param-list>
+<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+<param name="codiceFiscale" type="java.lang.String" />
+<param name="tipoIstruttoria" type="java.lang.String" />
+	</param-list>
+	<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.CondizionePunteggio[]" />
+</operation>
+	</operations>
+</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="profilazione"
+			              class="it.csi.csi.porte.soap.apache.PortaDelegataSoap"
+			              url-pa="@iscritto.serviscritto.profilazione.pabr.server.prefix@/serviscrittoApplProfilazionePabr/servlet/rpcrouter"
+			              url-qm="">
+				<properties>
+					<!-- dummy property (elemento obbligatorio) -->
+					<property name="dummy" value="dummy"/>
+				</properties>
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<queue-manager url=""/>
+	</config>
+</porta-delegata>

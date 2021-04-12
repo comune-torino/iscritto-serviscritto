@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>  
+  <mbean code="it.csi.iscritto.serviscritto.business.profilazione.spring.startup.LoadStartupService" name="it.csi.iscritto.serviscritto.business.profilazione.spring.startup:service=LoadStartup">
+    <attribute name="Message">Startup contesto spring</attribute>
+  </mbean>
+</server>

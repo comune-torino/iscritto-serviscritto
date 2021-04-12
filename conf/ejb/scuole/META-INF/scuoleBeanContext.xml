@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"> 
+       					   
+
+	<!--PROTECTED REGION ID(R-1972167620) ENABLED START-->
+	
+	<!--PROTECTED REGION END-->
+	
+	
+	
+	<bean id="scuoleImpl" class="it.csi.iscritto.serviscritto.business.scuole.ScuoleImpl">			
+	<!--PROTECTED REGION ID(R-236358458) ENABLED START-->
+
+		<property name="scuoleDao">
+			<ref bean="scuoleDao" />
+		</property>
+
+	<!--PROTECTED REGION END-->
+	</bean>
+	
+	
+</beans>

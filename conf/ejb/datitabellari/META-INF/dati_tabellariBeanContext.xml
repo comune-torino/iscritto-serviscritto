@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       					   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"> 
+       					   
+
+	<!--PROTECTED REGION ID(R-57488892) ENABLED START-->
+
+	<bean id="datiTabellariHelper"
+		class="it.csi.iscritto.serviscritto.business.datitabellari.helper.DatiTabellariHelper">
+		<property name="datiTabellariDao">
+			<ref bean="datiTabellariDao" />
+		</property>
+	</bean>
+			
+	<!--PROTECTED REGION END-->
+	
+	
+	
+	<bean id="datiTabellariImpl" class="it.csi.iscritto.serviscritto.business.datitabellari.DatiTabellariImpl">			
+	<!--PROTECTED REGION ID(R-55608997) ENABLED START-->
+
+		<property name="datiTabellariHelper">
+			<ref bean="datiTabellariHelper" />
+		</property>
+
+	<!--PROTECTED REGION END-->
+	</bean>
+	
+	
+</beans>

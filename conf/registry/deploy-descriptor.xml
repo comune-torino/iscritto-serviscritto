@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy-descriptor 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="../../conf/deploy-descriptor.xsd">
+	<rilascio
+		ambiente="@rilascio.ambiente@"
+		cliente="@rilascio.cliente@"
+		istanza="@rilascio.istanza@"
+		unita-installazione="serviscritto"
+		staging="false">
+		<prodotto codice="ISCRITTO" versione="3.6.0">
+			<descrizione>@prodotto.descrizione@</descrizione>
+		</prodotto>
+		<componente codice="SERVISCRITTO">
+			<descrizione>@componente.descrizione@</descrizione>
+		</componente>
+	</rilascio>
+	<lista-servizi>
+		<servizio nome="luoghi" versione-intf="2.2.0" versione-impl="2.2.0" tipo-servizio="A" tipo-erogazione="O">
+			<versione-retrocompatibile>true</versione-retrocompatibile>
+		</servizio>
+		<servizio nome="profilazione" versione-intf="2.5.0" versione-impl="2.5.0" tipo-servizio="A" tipo-erogazione="O">
+			<versione-retrocompatibile>true</versione-retrocompatibile>
+		</servizio>
+		<servizio nome="scuole" versione-intf="2.5.0" versione-impl="2.5.0" tipo-servizio="A" tipo-erogazione="O">
+			<versione-retrocompatibile>true</versione-retrocompatibile>
+		</servizio>
+		<servizio nome="datitabellari" versione-intf="2.2.0" versione-impl="2.2.0" tipo-servizio="A" tipo-erogazione="O">
+			<versione-retrocompatibile>true</versione-retrocompatibile>
+		</servizio>
+		<servizio nome="domanda" versione-intf="2.6.0" versione-impl="2.6.0" tipo-servizio="A" tipo-erogazione="O">
+			<versione-retrocompatibile>true</versione-retrocompatibile>
+		</servizio>
+	</lista-servizi>
+	<lista-binding>
+	    <binding servizio="luoghi" versione="2.2.0" protocollo="CSI-java-jnp">
+			<endpoint>
+				<csi-endpoint pd-file="defpd_luoghi_CSI_java_jnp.xml">
+					<override-url>@iscritto.serviscritto.luoghi.pa.url@</override-url>
+				</csi-endpoint>
+			</endpoint>
+		</binding>
+	    <binding servizio="profilazione" versione="2.5.0" protocollo="CSI-java-jnp">
+			<endpoint>
+				<csi-endpoint pd-file="defpd_profilazione_CSI_java_jnp.xml">
+					<override-url>@iscritto.serviscritto.profilazione.pa.url@</override-url>
+				</csi-endpoint>
+			</endpoint>
+		</binding>
+	    <binding servizio="scuole" versione="2.5.0" protocollo="CSI-java-jnp">
+			<endpoint>
+				<csi-endpoint pd-file="defpd_scuole_CSI_java_jnp.xml">
+					<override-url>@iscritto.serviscritto.scuole.pa.url@</override-url>
+				</csi-endpoint>
+			</endpoint>
+		</binding>
+	    <binding servizio="datitabellari" versione="2.2.0" protocollo="CSI-java-jnp">
+			<endpoint>
+				<csi-endpoint pd-file="defpd_datitabellari_CSI_java_jnp.xml">
+					<override-url>@iscritto.serviscritto.datitabellari.pa.url@</override-url>
+				</csi-endpoint>
+			</endpoint>
+		</binding>
+	    <binding servizio="domanda" versione="2.6.0" protocollo="CSI-java-jnp">
+			<endpoint>
+				<csi-endpoint pd-file="defpd_domanda_CSI_java_jnp.xml">
+					<override-url>@iscritto.serviscritto.domanda.pa.url@</override-url>
+				</csi-endpoint>
+			</endpoint>
+		</binding>
+	</lista-binding>
+</deploy-descriptor>
